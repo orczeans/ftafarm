@@ -1,0 +1,73 @@
+<ion-header>
+
+  <ion-navbar color="dark">
+    <ion-title>포괄 확인서</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content class="common-bg">
+	<ion-card class="field-set">
+		<!-- 발급번호 -->
+		<ion-card-header>
+		  발급번호
+		</ion-card-header>
+		<ion-card-content>
+		  {{orgplce.issuNo}}
+		</ion-card-content>
+		
+		<!-- 발급일자 -->
+		<ion-card-header>
+		  발급일자
+		</ion-card-header>
+		<ion-card-content>
+		  {{orgplce.issuDt}}
+		</ion-card-content>
+		
+		<!-- 포괄기간 -->
+		<ion-card-header>
+		  포괄기간
+		</ion-card-header>
+		<ion-card-content>
+		  {{orgplce.inclCnfirmBeginDt}} ~ {{orgplce.inclCnfirmEndDt}}
+		</ion-card-content>
+	</ion-card>
+	
+	<ion-card class="list-group" *ngFor="let fta of ftas">
+		<ion-list>
+			<ion-item-group>
+				<ion-item-divider color="dark">{{fta.ftaNm}}</ion-item-divider>
+				<ion-item *ngFor="let item of orgplce.itemList | orgplceDetailFilter : fta.ftaCode">
+					<ion-label>{{item.spciesNm}} {{item.itemNm}} {{item.stndrd}}</ion-label>
+					<ion-checkbox color="dark" [checked]="true"></ion-checkbox>
+					<p item-end>{{item.psrNm}}</p>
+				</ion-item>
+			</ion-item-group>
+		</ion-list>
+	</ion-card>
+</ion-content>
+
+<ion-footer>
+  <ion-grid>
+    <ion-row class="signature">
+      <ion-col col-12 *ngIf="orgplce.sttus != '30'">
+        <signature-pad [options]="signaturePadOptions"  (onEndEvent)="signatureOnEnd()" id="signatureCanvas"></signature-pad>
+      </ion-col>
+      <ion-col col-12 *ngIf="orgplce.sttus == '30'">
+        <img src="{{getSignatureUrl()}}" />
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="orgplce.sttus != '30'">
+      <ion-col col-6>
+        <button ion-button full color="secondary"
+          (click)="signatureRefresh()"
+          [disabled]="!signatureAt">서명 다시하기</button>
+      </ion-col>
+      <ion-col col-6>
+        <button ion-button full color="danger"
+          (click)="signatureComplete()"
+          [disabled]="!signatureAt">서명 및 제출</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

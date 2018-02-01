@@ -1,0 +1,112 @@
+<ion-header>
+
+  <ion-navbar color="dark">
+    <ion-title>입고 등록</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content class="common-bg">
+
+  <ion-list class="list-group">
+    <ion-item>
+      <ion-icon name="md-calendar" item-left></ion-icon>
+      <ion-label fixed>재배시작</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY/MM/DD" [(ngModel)]="ctvtBeginDt" item-end></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="md-calendar" item-left></ion-icon>
+      <ion-label fixed>재배완료</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY/MM/DD" [(ngModel)]="ctvtEndDt" item-end></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="md-calendar" item-left></ion-icon>
+      <ion-label fixed>수확일자</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY/MM/DD" [(ngModel)]="shipmntDt"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="md-calendar" item-left></ion-icon>
+      <ion-label fixed>입고일자</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY/MM/DD" [(ngModel)]="wrhousngDt"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="done-all" item-left></ion-icon>
+      <ion-label fixed>입고번호</ion-label>
+      <ion-input type="text" [(ngModel)]="ledger.wrhousngNo"></ion-input>
+    </ion-item>
+	</ion-list>
+
+  <ion-card class="list-group">
+	  <ion-list>
+	      <ion-item *ngFor="let item of ledger.itemList">
+	        <ion-label fixed>{{item.spciesNm}} {{item.itemNm}} {{item.stndrd}}</ion-label>
+	        <ion-input type="number" [(ngModel)]="item.qy" class="text-right" *ngIf="ledger.sttus == '10' || ledger.sttus == '20'"></ion-input>
+	        <ion-select [(ngModel)]="item.qyUnit" item-end *ngIf="ledger.sttus == '10' || ledger.sttus == '20'">
+				<ion-option value="{{code.code}}" *ngFor="let code of qyUnitCode">{{code.name}}</ion-option>
+			</ion-select>
+	        <ion-input type="number" [(ngModel)]="item.acptncQy" class="text-right" *ngIf="ledger.sttus == '30' || ledger.sttus == '40' || ledger.sttus == '50'"></ion-input>
+	        <p item-end *ngIf="ledger.sttus == '30' || ledger.sttus == '40' || ledger.sttus == '50'">{{item.qyUnit}}</p>
+	        <p item-end *ngIf="ledger.sttus == '60'">{{item.acptncQy}} {{item.qyUnit}}</p>
+	      </ion-item>
+	  </ion-list>
+	</ion-card>
+</ion-content>
+
+<ion-footer class="footer-input" [ngSwitch]="true">
+  <!-- button -->
+  <ion-grid *ngSwitchCase="signatureTy === 'button'" >
+    <ion-row>
+      <ion-col col-4>
+        <button ion-button full color="secondary" (click)="openShipmnt()" [disabled]="!(ledger.sttus=='10' || ledger.sttus=='20') || ctvtBeginDt == null || ctvtEndDt == null">재배확인</button>
+      </ion-col>
+      <ion-col col-4>
+        <button ion-button full color="primary" (click)="openCnfirm()" >입고확인</button>
+      </ion-col>
+      <ion-col col-4>
+        <button ion-button full color="danger" (click)="openAcptnc()" [disabled]="!(ledger.sttus =='30' || ledger.sttus =='40' || ledger.sttus =='50')">검수확인</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!-- /button -->
+  
+  <!-- signature pad -->
+  <ion-grid *ngSwitchCase="signatureTy !== 'button'">
+    <ion-row class="signature">
+      <ion-col col-12>
+        <signature-pad [options]="signaturePadOptions"  (onEndEvent)="signatureOnEnd()" id="signatureCanvas"></signature-pad>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12>
+        <ion-item>
+	        <ion-label fixed>성명</ion-label>
+	        <ion-input type="text" [(ngModel)]="signatureNm"></ion-input>
+	      </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12>
+        <ion-item>
+	        <ion-label fixed>전화번호</ion-label>
+	        <ion-input type="text" [(ngModel)]="signatureTelno"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-4>
+        <button ion-button full color="secondary"
+          (click)="signatureTy = 'button'">닫기</button>
+      </ion-col>
+      <ion-col col-4>
+        <button ion-button full color="secondary"
+          (click)="signatureClear()"
+          [disabled]="!signatureAt">서명 다시하기</button>
+      </ion-col>
+      <ion-col col-4>
+        <button ion-button full color="danger" (click)="signatureComplete()" [disabled]="!signatureAt">서명 및 확인</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!-- /signature pad -->
+</ion-footer>
+

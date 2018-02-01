@@ -1,0 +1,35 @@
+<ion-content padding class="animated fadeIn login auth-page">
+
+	<div class="login-content">
+		<!-- Logo -->
+		<div padding-horizontal text-center class="animated fadeInDown">
+			<div class="logo"></div>
+		</div> 
+		<!-- /Logo --> 
+		
+		<!-- Login form -->
+		<form [formGroup]="onLoginForm" class="list-form" round>
+			<ion-item>
+				<ion-label floating> 
+					<ion-icon name="mail" item-start color="secondary"></ion-icon> I D 
+				</ion-label> 
+				<ion-input type="email" formControlName="email" [(ngModel)]="username"></ion-input> 
+			</ion-item>
+			<p ion-text color="danger" class="text-1x has-error" *ngIf="onLoginForm.get('email').touched && onLoginForm.get('email').hasError('required')">This field is required</p>
+			
+			<ion-item> 
+				<ion-label floating> 
+					<ion-icon name="lock" item-start color="secondary"></ion-icon> PASSWORD </ion-label> 
+					<ion-input type="password" formControlName="password" [(ngModel)]="password"></ion-input> 
+			</ion-item>
+			<p ion-text color="danger" class="text-1x has-error" *ngIf="onLoginForm.get('password').touched && onLoginForm.get('password').hasError('required')">This field is required</p>
+		</form> <!-- /Login form --> <!-- Login Button -->
+		<div>
+			<button ion-button icon-start block color="dark" tappable (click)="login()" [disabled]="!onLoginForm.valid">
+				<ion-icon name="log-in"></ion-icon> 로그인
+			</button>
+		</div> 
+		<!-- /Login Button -->
+	</div>
+	
+</ion-content>

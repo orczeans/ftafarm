@@ -1,0 +1,65 @@
+<!-- 헤더 -->
+<ion-header class="animated fadeIn no-shadow">
+	<ion-navbar class="no-border" color="dark">
+		<!-- 좌측 버튼 -->
+		<button ion-button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<!-- /좌측 버튼 -->
+
+		<!-- 중앙 타이틀 -->
+		<ion-title>{{cmpny.cmpnyNm}}</ion-title>
+		<!-- /중앙 타이틀 -->
+
+		<!-- 오른쪽 버튼 -->
+		<ion-buttons end>
+			<button ion-button tappable (click)="viewInfo()">
+				<ion-icon name="information-circle"></ion-icon>
+			</button>
+		</ion-buttons>
+		<!-- /오른쪽 버튼 -->
+	</ion-navbar>
+</ion-header>
+<!-- /헤더 -->
+
+<ion-content class="animated fadeIn common-bg">
+
+	<!-- 탭 -->
+	<ion-segment [(ngModel)]="listTy" color="dark" class="segment-btn">
+		<ion-segment-button value="cmpny" (click)="reset()">
+			<ion-icon name="checkbox"> 관리품목</ion-icon>
+		</ion-segment-button>
+		<ion-segment-button value="all" (click)="reset()">
+			<ion-icon name="list-box"> 전체품목</ion-icon>
+		</ion-segment-button>
+	</ion-segment>
+	<!-- /탭 -->
+
+	<!-- 검색 -->
+	<ion-searchbar [(ngModel)]="query" (ionInput)="reset($event)" *ngIf="listTy=='all'"></ion-searchbar>
+	<!-- /검색 -->
+
+	<!-- 품목 목록 -->
+	<ion-list [ngSwitch]="listTy">
+		<ion-item *ngFor="let item of items" (click)="listTy == 'cmpny'?viewOne(item):addOne(item)">
+			<ion-thumbnail item-start>
+				<img src="{{getImageUrl(item)}}">
+			</ion-thumbnail>
+			<h2>{{item.itemNm}} {{item.stndrd}}</h2>
+			<p>{{rendererService.getAgCode(item.itemCode)}}</p>
+
+			<button ion-button clear item-end color="dark" large *ngSwitchCase="'cmpny'">
+				<ion-icon name="arrow-dropright"></ion-icon>
+			</button>
+
+			<button ion-button clear item-end color="dark" large *ngSwitchCase="'all'">
+				<ion-icon name="add"></ion-icon>
+			</button>
+		</ion-item>
+	</ion-list>
+	<!-- /품목 목록 -->
+
+	<button ion-button block (click)="findMore()" *ngIf="items.length > 0">
+		<ion-icon name="add-circle"></ion-icon>&nbsp;더보기
+	</button>
+</ion-content>

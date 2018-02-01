@@ -1,0 +1,13 @@
+{
+  "name": "FTA FARM",
+  "short_name": "FTA FARM",
+  "start_url": "./?utm_source=web_app_manifest",
+  "display": "standalone",
+  "icons": [{
+    "src": "assets/img/logo.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }],
+  "background_color": "#563d7c",
+  "theme_color": "#563d7c"
+}

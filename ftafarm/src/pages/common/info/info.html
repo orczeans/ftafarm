@@ -1,0 +1,40 @@
+<ion-header>
+	<ion-navbar color="dark">
+		<ion-title>정보</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="common-bg info">
+	<ion-list>
+		<ion-item>
+			<h3>프로그램</h3>
+			<p item-end>FTA FARM 생산자 관리 시스템</p>
+		</ion-item>
+		<ion-item>
+			<h3>만든이</h3>
+			<p item-end>(주)한국무역정보통신</p>
+		</ion-item>
+		<ion-item>
+			<h3>버전</h3>
+			<p item-end>1.0.02</p>
+		</ion-item>
+		<ion-item>
+			<h3>홈페이지</h3>
+			<button ion-button clear item-end small color="dark" (click)="openURL('https://ftafarm.utradehub.or.kr')">
+			바로가기
+			</button>
+		</ion-item>
+		<ion-item>
+			<h3>이용약관</h3>
+			<button ion-button clear item-end small color="dark" (click)="viewTermsUse()">
+			자세히
+			</button>
+		</ion-item>
+		<ion-item>
+			<h3>개인정보취급방침</h3>
+			<button ion-button clear item-end small color="dark" (click)="viewTermsPrivate()">
+			자세히
+			</button>
+		</ion-item>
+	</ion-list>
+</ion-content>

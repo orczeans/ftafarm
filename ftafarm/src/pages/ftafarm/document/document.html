@@ -1,0 +1,41 @@
+<ion-header>
+
+  <ion-navbar color="dark">
+    <ion-title>{{name}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content class="common-bg">
+  <ion-slides pager>
+	  <ion-slide *ngFor="let doc of docs">
+	    <img [src]="getImageURL(doc)" class="slide-image"/>
+	  </ion-slide>
+
+	<ion-slide *ngIf="docs.length == 0">
+		<img src="assets/img/blank.png" class="slide-image" />
+	</ion-slide>
+  </ion-slides>
+
+	<ion-fab top right *ngIf="docs.length != 0">
+		<button ion-fab mini  (click)="removePicture()" color="white">
+  			<ion-icon name="close"></ion-icon>
+  		</button>
+	</ion-fab>
+
+  <ion-fab bottom right>
+	   	<button ion-fab mini  (click)="takePicture()">
+	   		<ion-icon name="camera"></ion-icon>
+	   	</button>
+	</ion-fab>
+</ion-content>
+
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12>
+        <button ion-button full color="danger" (click)="savePicture()" [disabled]="docs.length == 0">증빙저장</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

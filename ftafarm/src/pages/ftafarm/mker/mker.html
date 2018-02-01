@@ -1,0 +1,69 @@
+<!-- 헤더 -->
+<ion-header class="animated fadeIn no-shadow"> 
+	<ion-navbar class="no-border" color="dark"> 
+		<!-- 좌측 버튼 -->
+		<button ion-button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<!-- /좌측 버튼 --> 
+	
+		<!-- 중앙 타이틀 --> 
+		<ion-title>{{cmpny.cmpnyNm}}</ion-title> 
+		<!-- /중앙 타이틀 --> 
+		
+		<!-- 오른쪽 버튼 --> 
+		<ion-buttons end>
+			<button ion-button tappable (click)="viewInfo()">
+				<ion-icon name="information-circle"></ion-icon>
+			</button>
+		</ion-buttons> 
+		<!-- /오른쪽 버튼 --> 
+	</ion-navbar> 
+</ion-header>
+<!-- /헤더 -->
+
+<ion-content class="animated fadeIn common-bg"> 
+	
+	<!-- 검색 -->
+	<ion-searchbar [(ngModel)]="query" (ionInput)="reset($event)"></ion-searchbar>
+	<!-- /검색 -->
+		
+	<!-- 생산자 목록 --> 
+	<ion-card class="mker-item" *ngFor="let mker of mkers">
+		<ion-item class="mker-info" (click)="viewOne(mker, 'info')"> 
+			<ion-avatar item-start> 
+				<img src="{{getImageUrl(mker)}}"> 
+			</ion-avatar>
+			<h2>{{mker.mkerNm}}</h2>
+			<p>{{mker.mkerCode}}</p>
+		</ion-item> 
+		
+		<ion-segment color="dark" class="segment-btn"> 
+			<ion-segment-button value="info" (click)="viewOne(mker, 'info')"> 
+				<ion-icon name="contact"> 정보</ion-icon> 
+			</ion-segment-button> 
+			<ion-segment-button value="land" (click)="viewOne(mker, 'land')"> 
+				<ion-icon name="map"> 필지</ion-icon> 
+			</ion-segment-button> 
+			<ion-segment-button value="cnfirm" (click)="viewOne(mker, 'cnfirm')"> 
+				<ion-icon name="checkmark-circle"> 동의</ion-icon>
+			</ion-segment-button> 
+			<ion-segment-button value="document" (click)="viewOne(mker, 'document')" [disabled]="mker.signAt != 'Y'">
+				<ion-icon name="document"> 증빙</ion-icon> 
+			</ion-segment-button> 
+			<ion-segment-button value="ledger" (click)="viewOne(mker, 'ledger')" [disabled]="mker.signAt != 'Y'"> 
+				<ion-icon name="exit"> 입고</ion-icon> 
+			</ion-segment-button> 
+		</ion-segment>
+	</ion-card> 
+	<button ion-button block (click)="findMore()" *ngIf="mkers.length > 0">
+		<ion-icon name="add-circle"></ion-icon>&nbsp;더보기
+	</button>
+	<!-- /생산자 목록 --> 
+	
+	<!-- 데이터 없음 --> 
+	<ion-card class="mker-item" *ngIf="mkers == null || mkers.length == 0"> 
+		<ion-item class="mker-info">생산자를 찾을 수 없습니다. </ion-item> 
+	</ion-card>
+	<!-- /데이터 없음 --> 
+</ion-content>

@@ -1,0 +1,38 @@
+<!-- 헤더 -->
+<ion-header class="animated fadeIn no-shadow">
+	<ion-navbar class="no-border" color="dark">
+		<!-- 좌측 버튼 -->
+		<button ion-button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<!-- /좌측 버튼 -->
+
+		<!-- 중앙 타이틀 -->
+		<ion-title>{{cmpny.cmpnyNm}}</ion-title>
+		<!-- /중앙 타이틀 -->
+
+		<!-- 오른쪽 버튼 -->
+		<ion-buttons end>
+			<button ion-button tappable (click)="viewInfo()">
+				<ion-icon name="information-circle"></ion-icon>
+			</button>
+		</ion-buttons>
+		<!-- /오른쪽 버튼 -->
+	</ion-navbar>
+</ion-header>
+<!-- /헤더 -->
+
+<ion-content class="card-background-page">
+  <ion-card>
+    <img src="assets/img/home.png" />
+    <div class="card-title">FTA FARM</div>
+    <div class="card-subtitle">생산자 관리 어플리케이션</div>
+
+    <ion-item (click)="viewMkers()">
+      <ion-icon name='contacts' item-start color="dark"></ion-icon> 생산자 <ion-badge item-end>{{mkerCnt}}</ion-badge>
+    </ion-item>
+    <ion-item (click)="viewItems()">
+      <ion-icon name='leaf' item-start color="dark"></ion-icon> 품목 <ion-badge item-end>{{itemCnt}}</ion-badge>
+    </ion-item>
+  </ion-card>
+</ion-content>

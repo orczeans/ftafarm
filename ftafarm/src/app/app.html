@@ -1,0 +1,43 @@
+<ion-menu side="left" id="authenticated" [content]="content">
+  <ion-header color="white">
+    <ion-toolbar class="user-profile">
+
+      <ion-fab top right>
+        <button ion-fab mini color="secondary" menuClose>
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-fab>
+
+      <ion-grid>
+        <ion-row justify-content-center>
+          <ion-col padding-left padding-right padding-top col-auto>
+              <div class="user-avatar" [style.backgroundImage]="'url('+ getAvatarUrl() +')'"></div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row justify-content-center>
+          <ion-col padding-left padding-right padding-bottom text-center col-auto>
+            <h2 ion-text color="black" class="no-margin bold">
+              {{oAuthService.getUser().userNm}}
+            </h2>
+          </ion-col>
+        </ion-row>
+
+      </ion-grid>
+
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content color="primary">
+
+    <ion-list class="menu-list">
+      <button ion-item menuClose class="text-1x" *ngFor="let menuItem of appMenuItems" (click)="clickMenu(menuItem)">
+        <ion-icon item-left [name]="menuItem.icon" color="primary"></ion-icon>
+        <span ion-text color="primary">{{menuItem.title}}</span>
+      </button>
+    </ion-list>
+  </ion-content>
+
+</ion-menu>
+
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

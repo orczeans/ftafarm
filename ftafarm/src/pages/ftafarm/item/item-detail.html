@@ -1,0 +1,94 @@
+<ion-header>
+	<ion-navbar color="dark">
+		<ion-title>품목 상세</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="common-bg">
+	<ion-card class="field-set">
+		<!-- 품종 -->
+		<ion-card-header *ngIf="item.spciesNm"> 품종 </ion-card-header>
+		<ion-card-content *ngIf="item.spciesNm">{{item.spciesNm}} </ion-card-content>
+
+		<!-- 품명 -->
+		<ion-card-header> 품명 </ion-card-header>
+		<ion-card-content>{{item.itemNm}} </ion-card-content>
+
+		<!-- 규격 -->
+		<ion-card-header *ngIf="item.stndrd"> 규격 </ion-card-header>
+		<ion-card-content *ngIf="item.stndrd"> {{item.stndrd}} </ion-card-content>
+
+		<!-- AG코드 -->
+		<ion-card-header> AG코드 </ion-card-header>
+		<ion-card-content>{{rendererService.getAgCode(item.itemCode)}} </ion-card-content>
+
+		<!-- HS코드 -->
+		<ion-card-header *ngIf="item.hsCode != null">HS코드 </ion-card-header>
+		<ion-card-content *ngIf="item.hsCode != null"> {{rendererService.getHsCode(item.hsCode)}} </ion-card-content>
+	</ion-card>
+
+  <!-- 탭 -->
+  <ion-segment [(ngModel)]="listTy" color="dark" class="segment-btn">
+    <ion-segment-button value="spcies">
+      <ion-icon name="git-network"> 품종</ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="procs">
+      <ion-icon name="cart"> 유통과정</ion-icon>
+    </ion-segment-button>
+  </ion-segment>
+  <!-- /탭 -->
+
+  <ion-card [ngSwitch]="listTy">
+    <ion-list *ngSwitchCase="'spcies'">
+	    <ion-item *ngFor="let child of item.children">
+	      <ion-thumbnail item-start (click)="takeItemPicture(child)">
+	        <img src="{{getItemImageUrl(child)}}">
+	      </ion-thumbnail>
+	      <h2>{{ child.spciesNm }}</h2>
+         <button ion-button clear item-end color="danger" large (click)="removeItem(child)">
+           <ion-icon name="remove-circle"></ion-icon>
+         </button>
+	    </ion-item>
+	    <ion-item *ngIf="item.children == null || item.children.length == 0">
+        <ion-thumbnail item-start (click)="takeItemPicture(item)">
+          <img src="{{getItemImageUrl(item)}}">
+        </ion-thumbnail>
+        <h2>기본</h2>
+	    </ion-item>
+	    <ion-item>
+	      <button ion-button block (click)="addItem()">
+	        <ion-icon name="add-circle"> 품종추가</ion-icon>
+         </button>
+	    </ion-item>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'procs'">
+      <ion-item *ngFor="let procs of item.procsList">
+        <ion-thumbnail item-start (click)="takeProcsPicture(procs)">
+          <img src="{{getProcsImageUrl(procs)}}">
+        </ion-thumbnail>
+        <h2>{{ procs.procsSj }}</h2>
+         <button ion-button clear item-end color="danger" large (click)="removeProcs(procs)">
+           <ion-icon name="remove-circle"></ion-icon>
+         </button>
+      </ion-item>
+      <ion-item>
+        <button ion-button block (click)="addProcs()">
+          <ion-icon name="add-circle"> 유통과정추가</ion-icon>
+         </button>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+</ion-content>
+
+<ion-footer>
+	<ion-grid>
+		<ion-row>
+			<ion-col col-12>
+				<button ion-button full color="danger" (click)="remove()">
+					삭제
+				</button>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-footer>

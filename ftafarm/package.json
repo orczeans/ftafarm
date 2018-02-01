@@ -1,0 +1,90 @@
+{
+  "name": "FTAFARM",
+  "description": "FTA FARM - 생산자관리 시스템",
+  "version": "1.2.3",
+  "author": "KTNET <krlee@ktnet.co.kr>",
+  "homepage": "https://ktnet.co.kr",
+  "private": true,
+  "scripts": {
+    "clean": "ionic-app-scripts clean",
+    "build": "ionic-app-scripts build --prod && html-minifier www/index.html --html5 --remove-comments --collapse-whitespace --conservative-collapse --remove-attribute-quotes --collapse-inline-tag-whitespace --minify-js=true --trim-custom-fragments --remove-tag-whitespace -o www/index.html && npm run copy-redirects",
+    "lint": "ionic-app-scripts lint",
+    "ionic:build": "ionic-app-scripts build",
+    "ionic:serve": "ionic-app-scripts serve",
+    "copy-redirects": "cp _headers _redirects www/"
+  },
+  "dependencies": {
+    "@angular/common": "5.0.0",
+    "@angular/compiler": "5.0.0",
+    "@angular/compiler-cli": "5.0.0",
+    "@angular/core": "5.0.0",
+    "@angular/forms": "5.0.0",
+    "@angular/http": "5.0.0",
+    "@angular/platform-browser": "5.0.0",
+    "@angular/platform-browser-dynamic": "5.0.0",
+    "@angular/tsc-wrapped": "^4.4.6",
+    "@ionic-native/camera": "^4.5.2",
+    "@ionic-native/core": "^4.4.0",
+    "@ionic-native/device": "^4.4.0",
+    "@ionic-native/in-app-browser": "^4.5.2",
+    "@ionic-native/keyboard": "^4.4.0",
+    "@ionic-native/splash-screen": "4.4.0",
+    "@ionic-native/status-bar": "^4.4.0",
+    "@ionic/storage": "2.1.3",
+    "angular2-signaturepad": "^2.4.0",
+    "autoprefixer": "^7.2.5",
+    "cordova-android": "7.0.0",
+    "cordova-browser": "5.0.3",
+    "cordova-plugin-camera": "^4.0.1",
+    "cordova-plugin-console": "^1.1.0",
+    "cordova-plugin-device": "^1.1.7",
+    "cordova-plugin-inappbrowser": "^2.0.2",
+    "cordova-plugin-splashscreen": "^4.1.0",
+    "cordova-plugin-statusbar": "^2.4.1",
+    "cordova-plugin-whitelist": "^1.3.3",
+    "ionic-angular": "3.9.2",
+    "ionic-plugin-keyboard": "^2.2.1",
+    "ionicons": "3.0.0",
+    "join-path": "^1.1.1",
+    "moment": "^2.20.1",
+    "ng2-file-upload": "^1.3.0",
+    "ngx-numeral": "0.0.1-beta.0",
+    "npm": "^5.5.1",
+    "numeral": "^2.0.6",
+    "rxjs": "^5.5.6",
+    "serve": "6.4.8",
+    "sw-toolbox": "3.6.0",
+    "webpack": "^3.10.0",
+    "zone.js": "0.8.18"
+  },
+  "devDependencies": {
+    "@ionic/app-scripts": "^2.1.4",
+    "angular-ide": "^0.9.38",
+    "html-minifier": "^3.5.5",
+    "ionic": "3.19.1",
+    "purify-css": "^1.2.5",
+    "typescript": "2.3.4"
+  },
+  "cordovaPlugins": [],
+  "cordovaPlatforms": [],
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-console": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-whitelist": {},
+      "ionic-plugin-keyboard": {},
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-camera": {},
+      "cordova-plugin-inappbrowser": {}
+    },
+    "platforms": [
+      "android",
+      "browser"
+    ]
+  },
+  "config": {
+    "ionic_sass": "./sass.js",
+    "ionic_webpack": "./webpack.config.js"
+  }
+}

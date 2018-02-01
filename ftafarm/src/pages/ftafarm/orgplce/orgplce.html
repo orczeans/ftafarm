@@ -1,0 +1,42 @@
+<ion-header>
+
+  <ion-navbar color="dark">
+    <ion-title>포괄 확인서 조회</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content class="common-bg">
+	<ion-list class="list-group">
+	  <ion-item>
+	    <ion-label>시작일자</ion-label>
+	    <ion-icon name="md-calendar" item-left></ion-icon>
+	    <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY/MM/DD" [(ngModel)]="orgplceStartDt" item-end (ionChange)="getOrgplce()"></ion-datetime>
+	  </ion-item>
+	  <ion-item>
+	    <ion-label>종료일자</ion-label>
+	    <ion-icon name="md-calendar" item-left></ion-icon>
+	    <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY/MM/DD" [(ngModel)]="orgplceEndDt" item-end (ionChange)="getOrgplce()"></ion-datetime>
+	  </ion-item>
+	</ion-list>
+	
+	<ion-list>
+	  <ion-item *ngFor="let orgplce of orgplces"  (click)="viewOrgplce(orgplce)">
+	    <h2>{{orgplce.issuNo}}</h2>
+	    <p>{{orgplce.inclCnfirmBeginDt}} ~ {{orgplce.inclCnfirmEndDt}}</p>
+	    <button ion-button clear item-end color="dark" large>
+	      <ion-icon name="arrow-dropright"></ion-icon>
+	    </button>
+	  </ion-item>
+	</ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12>
+        <button ion-button full color="danger" (click)="addOrgplce()">포괄 확인서 추가</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

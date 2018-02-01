@@ -1,0 +1,261 @@
+<ion-header>
+
+  <ion-navbar color="dark">
+    <ion-title>생산자 조회</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content class="profile common-bg">
+
+	<ion-card class="mker-item">
+
+		<ion-item class="field-set">
+			<ion-avatar item-start>
+				<img src="{{getImageUrl()}}">
+			</ion-avatar>
+			<h2>{{mker.mkerNm}}</h2>
+			<p>{{mker.mkerCode}}</p>
+		</ion-item>
+
+		<ion-segment [(ngModel)]="btnTy" color="dark" class="segment-btn">
+		  	<ion-segment-button value="info">
+		  		<ion-icon name="contact"> 정보</ion-icon>
+		  	</ion-segment-button>
+		  	<ion-segment-button value="land">
+		  		<ion-icon name="map"> 필지</ion-icon>
+		  	</ion-segment-button>
+		  	<ion-segment-button value="cnfirm">
+		  		<ion-icon name="checkmark-circle"> 동의</ion-icon>
+		  	</ion-segment-button>
+		  	<ion-segment-button value="document" [disabled]="mker.signAt != 'Y'">
+		  		<ion-icon name="document"> 증빙</ion-icon>
+		  	</ion-segment-button>
+		  	<ion-segment-button value="ledger" [disabled]="mker.signAt != 'Y'">
+		  		<ion-icon name="exit"> 입고</ion-icon>
+		  	</ion-segment-button>
+		</ion-segment>
+	</ion-card>
+
+	<div [ngSwitch]="btnTy">
+    <!------------------------------------------------------------------
+        정보 탭
+       ------------------------------------------------------------------>
+    <ion-card *ngSwitchCase="'info'" class="field-set">
+      <!-- 대표자 -->
+		  <ion-card-header>
+		    대표자
+		  </ion-card-header>
+		  <ion-card-content>
+		    {{mker.rprsntvNm}}
+		  </ion-card-content>
+
+		  <!-- 주소 -->
+		  <ion-card-header>
+        주소
+      </ion-card-header>
+      <ion-card-content>
+        {{mker.adres}}
+      </ion-card-content>
+
+      <!-- 지번 -->
+      <ion-card-header>
+        지번
+      </ion-card-header>
+      <ion-card-content>
+        {{mker.lnm}}
+      </ion-card-content>
+
+      <!-- 우편번호 -->
+      <ion-card-header>
+        우편번호
+      </ion-card-header>
+      <ion-card-content>
+        {{mker.zip}}
+      </ion-card-content>
+
+      <!-- 대표필지주소 -->
+      <ion-card-header>
+        대표필지주소
+      </ion-card-header>
+      <ion-card-content>
+        {{mker.lotAdres}}
+      </ion-card-content>
+
+      <!-- 필지면적 -->
+      <ion-card-header>
+        필지면적
+      </ion-card-header>
+      <ion-card-content>
+        {{(lotArStr)}} m²
+      </ion-card-content>
+		</ion-card>
+
+    <!------------------------------------------------------------------
+        필지 탭
+    ------------------------------------------------------------------>
+    <div *ngSwitchCase="'land'">
+		  <ion-card class="list-group" *ngFor="let lot of mker.lotList">
+	      <ion-list>
+				  <ion-item-group>
+				    <ion-item-divider color="dark">{{lot.lotAdres}}</ion-item-divider>
+				    <ion-item *ngFor="let item of lot.itemList">
+				      <ion-label>{{item.spciesNm}} {{item.itemNm}} {{item.stndrd}}</ion-label>
+	            <ion-checkbox color="dark" [ngModel]="item.mkerItemAt" (ngModelChange)="onItemCheck($event, item)"></ion-checkbox>
+					    <button ion-button clear item-end color="dark" large (click)="viewItem(item)">
+					      <ion-icon name="arrow-dropright"></ion-icon>
+					    </button>
+            </ion-item>
+				  </ion-item-group>
+				</ion-list>
+		  </ion-card>
+    </div>
+
+    <!------------------------------------------------------------------
+        동의 탭
+    ------------------------------------------------------------------>
+    <div *ngSwitchCase="'cnfirm'">
+      <ion-list class="list-group">
+        <ion-item>
+				  <ion-label>개인정보 수집 및 이용 동의</ion-label>
+				  <ion-checkbox color="dark" [(ngModel)]="terms01At" [disabled]="mker.mkerSignSn != null"></ion-checkbox>
+				  <button ion-button clear item-end small color="dark" (click)="viewTerms01()">
+				    자세히
+				  </button>
+				</ion-item>
+				<ion-item>
+          <ion-label>개인정보 처리위탁 동의</ion-label>
+          <ion-checkbox color="dark" [(ngModel)]="terms02At" [disabled]="mker.mkerSignSn != null"></ion-checkbox>
+          <button ion-button clear item-end small color="dark" (click)="viewTerms02()">
+            자세히
+          </button>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <!------------------------------------------------------------------
+        문서 탭
+    ------------------------------------------------------------------>
+    <div *ngSwitchCase="'document'">
+      <ion-card class="list-group">
+        <ion-list>
+					<ion-item-group>
+						<ion-item-divider color="dark">생산사실입증서류</ion-item-divider>
+						<ion-item *ngFor="let code of docCode01">
+						  <button ion-button clear item-left color="light" large>
+                <ion-icon name="images"></ion-icon>
+              </button>
+              <ion-label>{{ code.name }}</ion-label>
+              <button ion-button clear item-end color="dark" large (click)="viewDocument(code.code, code.name)">
+                <ion-icon name="arrow-dropright"></ion-icon>
+              </button>
+            </ion-item>
+					</ion-item-group>
+				</ion-list>
+      </ion-card>
+
+      <ion-card class="list-group">
+        <ion-list>
+					<ion-item-group>
+            <ion-item-divider color="dark">원산지확인서</ion-item-divider>
+            <ion-item>
+              <button ion-button clear item-left color="light" large>
+                <ion-icon name="images"></ion-icon>
+              </button>
+              <ion-label>원산지(포괄)확인서</ion-label>
+              <button ion-button clear item-end color="dark" large (click)="viewOrgplce()">
+                <ion-icon name="arrow-dropright"></ion-icon>
+              </button>
+            </ion-item>
+          </ion-item-group>
+        </ion-list>
+      </ion-card>
+
+      <ion-card class="list-group">
+        <ion-list>
+          <ion-item-group>
+            <ion-item-divider color="dark">대체인증서류</ion-item-divider>
+            <ion-item *ngFor="let code of docCode02">
+              <button ion-button clear item-left color="light" large>
+                <ion-icon name="images"></ion-icon>
+              </button>
+              <ion-label>{{ code.name }}</ion-label>
+              <button ion-button clear item-end color="dark" large (click)="viewDocument(code.code, code.name)">
+                <ion-icon name="arrow-dropright"></ion-icon>
+              </button>
+            </ion-item>
+          </ion-item-group>
+        </ion-list>
+      </ion-card>
+    </div>
+
+    <!------------------------------------------------------------------
+        입고 탭
+    ------------------------------------------------------------------>
+    <div *ngSwitchCase="'ledger'">
+      <ion-list class="list-group">
+        <ion-item>
+          <ion-label>시작일자</ion-label>
+          <ion-icon name="md-calendar" item-left></ion-icon>
+          <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY/MM/DD" [(ngModel)]="ledgerStartDt" item-end (ionChange)="findAllForLedger()"></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label>종료일자</ion-label>
+          <ion-icon name="md-calendar" item-left></ion-icon>
+          <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY/MM/DD" [(ngModel)]="ledgerEndDt" item-end (ionChange)="findAllForLedger()"></ion-datetime>
+        </ion-item>
+      </ion-list>
+
+
+      <ion-card class="list-group" *ngFor="let ledger of ledgers" (click)="viewLedger(ledger)">
+        <ion-list>
+          <ion-item-group>
+            <ion-item-divider color="dark">
+              <ion-label>{{ledger.wrhousngNo}}</ion-label>
+              <p item-end>{{rendererService.getDate(ledger.wrhousngDt, 'YYYY-MM-DD')}}</p>
+            </ion-item-divider>
+            <ion-item *ngFor="let item of ledger.itemList">
+              <ion-label>{{item.spciesNm}} {{item.itemNm}} {{item.stndrd}}</ion-label>
+              <div item-end>{{rendererService.getNumber(item.qy,  '0,0')}} {{item.qyUnit}}</div>
+            </ion-item>
+          </ion-item-group>
+        </ion-list>
+      </ion-card>
+    </div>
+
+	</div>
+</ion-content>
+
+<ion-footer [ngSwitch]="btnTy">
+  <ion-grid *ngSwitchCase="'cnfirm'">
+    <ion-row class="signature">
+      <ion-col col-12 *ngIf="mker.mkerSignSn == null">
+        <signature-pad [options]="signaturePadOptions"  (onEndEvent)="signatureOnEnd()" id="signatureCanvas"></signature-pad>
+      </ion-col>
+      <ion-col col-12 *ngIf="mker.mkerSignSn != null">
+        <img src="{{getSignatureUrl()}}" />
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="mker.mkerSignSn == null">
+      <ion-col col-6>
+        <button ion-button full color="secondary"
+          (click)="signatureRefresh()"
+          [disabled]="!signatureAt">서명 다시하기</button>
+      </ion-col>
+      <ion-col col-6>
+        <button ion-button full color="danger"
+          (click)="signatureComplete()"
+          [disabled]="!terms01At || !terms02At || !signatureAt">서명 및 동의</button>
+      </ion-col>
+    </ion-row>
+	</ion-grid>
+
+	<ion-grid *ngSwitchCase="'ledger'">
+    <ion-row>
+      <ion-col col-12>
+        <button ion-button full color="danger"
+          (click)="addLedger()">입고등록</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>
